@@ -1,21 +1,23 @@
 package com.ddd.basic.service;
 
 import com.ddd.basic.domain.circle.Circle;
-import com.ddd.basic.repository.circle.CircleRepository;
+import com.ddd.basic.domain.circle.CircleCreateDto;
+import com.ddd.basic.repository.circle.ICircleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 @RequiredArgsConstructor
+@Service
 public class CircleService {
 
-    private final CircleRepository circleRepository;
+    private final ICircleRepository circleRepository;
 
     public boolean exists(Circle circle) {
-        if (isDuplicated(circle.getName())) {
-            // 중복오류
-        }
-        return true;
+        Circle foundCircle = circleRepository.find(circle.getName());
+        if (Objects.nonNull(foundCircle)) return true;
+        return false;
     }
 
     private boolean isDuplicated(String circleName) {
