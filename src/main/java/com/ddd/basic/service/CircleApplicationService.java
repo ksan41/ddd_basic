@@ -1,5 +1,6 @@
 package com.ddd.basic.service;
 
+import com.ddd.basic.common.constants.ExceptionMessage;
 import com.ddd.basic.domain.User;
 import com.ddd.basic.domain.circle.Circle;
 import com.ddd.basic.domain.circle.CircleCreateDto;
@@ -26,29 +27,26 @@ public class CircleApplicationService {
     private final ICircleInvitationRepository circleInvitationRepository;
 
     @Transactional
-    public void create(CircleCreateDto circle) throws Exception {
+    public void create(CircleCreateDto circle) throws IllegalArgumentException, NullPointerException {
         User owner = userRepository.find(circle.getOwnerUserEmail());
         if (!Objects.nonNull(owner)) {
-            // not found
+            throw new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage());
         }
         Circle newCircle = circleFactory.create(circle.getCircleName(), owner);
         if (circleService.exists(newCircle)) {
-            // 중복오류
+            throw new IllegalArgumentException(ExceptionMessage.DUPLICATED_CIRCLE_NAME.getMessage());
         }
         circleRepository.save(newCircle);
     }
 
-    public void join(CircleJoinDto joinInfo) {
+    public void join(CircleJoinDto joinInfo) throws IllegalArgumentException, NullPointerException{
         User joinMember = userRepository.find(joinInfo.getUserId());
         if (!Objects.nonNull(joinMember)) {
-            // not found
+            throw new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage());
         }
         Circle circle = circleRepository.find(joinInfo.getCircleId());
         if (!Objects.nonNull(circle)) {
-            // not found
-        }
-        if (circle.getMembers().size() >= 29) {
-            // circle full
+            throw new NullPointerException(ExceptionMessage.NOT_FOUND_CIRCLE.getMessage());
         }
         circle.join(joinMember);
         circleRepository.save(circle);
@@ -57,17 +55,17 @@ public class CircleApplicationService {
     public void invite(CircleInviteDto inviteInfo) {
         User fromUser = userRepository.find(inviteInfo.getFromUserEmail());
         if (!Objects.nonNull(fromUser)) {
-            // not found
+            throw new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage());
         }
 
         User invitedUser = userRepository.find(inviteInfo.getInvitedUserEmail());
         if (!Objects.nonNull(invitedUser)) {
-            // not fount
+            throw new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage());
         }
 
         Circle circle = circleRepository.find(inviteInfo.getCircleId());
         if (!Objects.nonNull(circle)) {
-            // not found
+            throw new NullPointerException(ExceptionMessage.NOT_FOUND_CIRCLE.getMessage());
         }
         if (circle.getMembers().size() >= 29) {
             // circle full
