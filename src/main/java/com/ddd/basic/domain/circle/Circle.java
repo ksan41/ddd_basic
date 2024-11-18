@@ -36,10 +36,14 @@ public class Circle {
     }
 
     public void join(User user) throws IllegalArgumentException{
-        if (!Objects.nonNull(user)) throw new IllegalArgumentException();
-        if (members.size() >= 29) {
+        if (!Objects.nonNull(user)) throw new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage());
+        if (isFull()) {
             throw new IllegalArgumentException(ExceptionMessage.FULL_CIRCLE_MEMBERS.getMessage());
         }
         members.add(user);
+    }
+
+    public boolean isFull() {
+        return members.size() >= 29;
     }
 }

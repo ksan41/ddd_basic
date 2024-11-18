@@ -11,6 +11,7 @@ import com.ddd.basic.repository.ICircleInvitationRepository;
 import com.ddd.basic.repository.IUserRepository;
 import com.ddd.basic.repository.circle.ICircleRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +35,7 @@ public class CircleApplicationService {
         }
         Circle newCircle = circleFactory.create(circle.getCircleName(), owner);
         if (circleService.exists(newCircle)) {
-            throw new IllegalArgumentException(ExceptionMessage.DUPLICATED_CIRCLE_NAME.getMessage());
+            throw new IllegalIdentifierException(ExceptionMessage.DUPLICATED_CIRCLE_NAME.getMessage());
         }
         circleRepository.save(newCircle);
     }
@@ -67,8 +68,8 @@ public class CircleApplicationService {
         if (!Objects.nonNull(circle)) {
             throw new NullPointerException(ExceptionMessage.NOT_FOUND_CIRCLE.getMessage());
         }
-        if (circle.getMembers().size() >= 29) {
-            // circle full
+        if (circle.isFull()) {
+            throw new NegativeArraySizeException(ExceptionMessage.FULL_CIRCLE_MEMBERS.getMessage());
         }
         CircleInvitation circleInvitation = new CircleInvitation(circle, fromUser, invitedUser);
         circleInvitationRepository.save(circleInvitation);
