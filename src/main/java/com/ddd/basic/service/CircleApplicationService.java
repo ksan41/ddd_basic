@@ -26,7 +26,7 @@ public class CircleApplicationService {
     private final ICircleInvitationRepository circleInvitationRepository;
 
     @Transactional
-    public void create(CircleCreateDto circle) {
+    public void create(CircleCreateDto circle) throws Exception {
         User owner = userRepository.find(circle.getOwnerUserEmail());
         if (!Objects.nonNull(owner)) {
             // not found
@@ -50,7 +50,7 @@ public class CircleApplicationService {
         if (circle.getMembers().size() >= 29) {
             // circle full
         }
-        circle.getMembers().add(joinMember);
+        circle.join(joinMember);
         circleRepository.save(circle);
     }
 

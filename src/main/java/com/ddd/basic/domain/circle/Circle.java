@@ -25,12 +25,20 @@ public class Circle {
     @JoinColumn()
     private List<User> members;
 
-    public Circle(String name, User owner, List<User> members) throws Exception{
+    public Circle(String name, User owner, List<User> members) throws IllegalArgumentException{
         if (!Objects.nonNull(name) || name.length() < 3 || name.length() > 20) {
-            new IllegalArgumentException();
+            throw new IllegalArgumentException();
         }
         this.name = name;
         this.owner = owner;
         this.members = members;
+    }
+
+    public void join(User user) throws IllegalArgumentException{
+        if (!Objects.nonNull(user)) throw new IllegalArgumentException();
+        if (members.size() >= 29) {
+            // circle full exception
+        }
+        members.add(user);
     }
 }
