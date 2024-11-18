@@ -44,6 +44,10 @@ public class Circle {
     }
 
     public boolean isFull() {
-        return members.size() >= 29;
+        return countMembers() >= 30;
+    }
+
+    public int countMembers() {
+        return this.members.size() + 1;
     }
 }
