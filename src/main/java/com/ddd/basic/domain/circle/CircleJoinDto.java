@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class CircleJoinDto {
-    private String userId;
+    private Long userId;
     private Long circleId;
 }

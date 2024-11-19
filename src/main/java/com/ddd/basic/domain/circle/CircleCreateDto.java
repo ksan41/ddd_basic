@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class CircleCreateDto {
-    private String ownerUserEmail;
+    private Long ownerUserId;
     private String circleName;
 }

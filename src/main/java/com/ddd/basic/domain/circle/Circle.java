@@ -1,7 +1,7 @@
 package com.ddd.basic.domain.circle;
 
 import com.ddd.basic.common.constants.ExceptionMessage;
-import com.ddd.basic.domain.User;
+import com.ddd.basic.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,16 +35,9 @@ public class Circle {
         this.members = members;
     }
 
-    public void join(User user) throws IllegalArgumentException{
+    public void join(User user) throws NullPointerException{
         if (!Objects.nonNull(user)) throw new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage());
-        if (isFull()) {
-            throw new IllegalArgumentException(ExceptionMessage.FULL_CIRCLE_MEMBERS.getMessage());
-        }
         members.add(user);
-    }
-
-    public boolean isFull() {
-        return countMembers() >= 30;
     }
 
     public int countMembers() {

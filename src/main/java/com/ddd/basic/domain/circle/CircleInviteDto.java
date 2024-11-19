@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class CircleInviteDto {
-    private String fromUserEmail;
-    private String invitedUserEmail;
+    private Long fromUserId;
+    private Long invitedUserId;
     private Long circleId;
 }
