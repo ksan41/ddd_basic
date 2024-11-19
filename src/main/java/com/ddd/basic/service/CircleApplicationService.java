@@ -6,12 +6,14 @@ import com.ddd.basic.domain.user.User;
 import com.ddd.basic.domain.invvitation.CircleInvitation;
 import com.ddd.basic.repository.ICircleInvitationRepository;
 import com.ddd.basic.repository.IUserRepository;
-import com.ddd.basic.repository.circle.ICircleRepository;
+import com.ddd.basic.repository.circle.*;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -48,7 +50,7 @@ public class CircleApplicationService {
             throw new NullPointerException(ExceptionMessage.NOT_FOUND_CIRCLE.getMessage());
         }
 
-        if (circleFullSpec.isSatisfiedBy(circle)) {
+        if (circleFullSpec.isSatisfied(circle)) {
             throw new IllegalArgumentException(ExceptionMessage.FULL_CIRCLE_MEMBERS.getMessage());
         }
         circle.join(joinMember);
@@ -70,10 +72,17 @@ public class CircleApplicationService {
         if (!Objects.nonNull(circle)) {
             throw new NullPointerException(ExceptionMessage.NOT_FOUND_CIRCLE.getMessage());
         }
-        if (circleFullSpec.isSatisfiedBy(circle)) {
+        if (circleFullSpec.isSatisfied(circle)) {
             throw new NegativeArraySizeException(ExceptionMessage.FULL_CIRCLE_MEMBERS.getMessage());
         }
         CircleInvitation circleInvitation = new CircleInvitation(circle, fromUser, invitedUser);
         circleInvitationRepository.save(circleInvitation);
+    }
+
+    public List<Circle> getRecommend(CircleGetRecommendDto recommendRequest) {
+        CircleRecommendSpecification circleRecommendSpec = new CircleRecommendSpecification(LocalDateTime.now());
+
+        return circleRepository.findRecommended(circleRecommendSpec)
+                .stream().limit(10).toList();
     }
 }
