@@ -1,5 +1,6 @@
 package com.ddd.basic.domain.circle;
 
+import com.ddd.basic.BasicEntity;
 import com.ddd.basic.common.constants.ExceptionMessage;
 import com.ddd.basic.domain.user.User;
 import jakarta.persistence.*;
@@ -12,7 +13,7 @@ import java.util.Objects;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Circle {
+public class Circle extends BasicEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "circle_id")
