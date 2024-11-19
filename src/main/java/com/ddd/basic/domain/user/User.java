@@ -1,4 +1,4 @@
-package com.ddd.basic.domain;
+package com.ddd.basic.domain.user;
 
 import com.ddd.basic.common.constants.ExceptionMessage;
 import jakarta.persistence.*;
@@ -18,6 +18,9 @@ public class User {
     private String name;
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private UserGrade grade;
+
     public void changeName(String name) throws NullPointerException, IllegalArgumentException{
         if (!Objects.nonNull(name)) {
             throw new NullPointerException(ExceptionMessage.NOT_VALID_USER_NAME.getMessage());
@@ -26,5 +29,9 @@ public class User {
             throw new IllegalArgumentException(ExceptionMessage.NOT_VALID_USER_NAME.getMessage());
         }
         this.name = name;
+    }
+
+    public Boolean isPremium() {
+        return true;
     }
 }
