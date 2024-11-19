@@ -1,4 +1,4 @@
-package com.ddd.basic.domain.circle;
+package com.ddd.basic.repository.circle;
 
 import lombok.Getter;
 
