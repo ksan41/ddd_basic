@@ -2,6 +2,7 @@ package com.ddd.basic.api;
 
 import com.ddd.basic.application.user.UserApplicationService;
 import com.ddd.basic.application.user.UserPostDto;
+import com.ddd.basic.application.user.UserPutDto;
 import com.ddd.basic.application.user.UserViewDto;
 import com.ddd.basic.common.ResponseModel;
 import com.ddd.basic.common.ResultListMessage;
@@ -65,5 +66,16 @@ public class UserController {
         return res;
     }
 
-
+    @PutMapping("{id}")
+    public ResponseModel put(@PathVariable("id") Long userId, @RequestBody UserPutDto putUserInfo) {
+        ResponseModel res = new ResultMessage<>();
+        try {
+            userApplicationService.update(userId, putUserInfo);
+            res.success();
+        } catch(IllegalArgumentException | NullPointerException e) {
+            log.error(e.getMessage(), e);
+            res.error(e.getMessage(), 400);
+        }
+        return res;
+    }
 }

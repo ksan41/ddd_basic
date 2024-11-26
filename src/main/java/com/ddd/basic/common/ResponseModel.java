@@ -14,5 +14,9 @@ public abstract class ResponseModel {
         this.status = exception.getStatus();
         this.message = exception.getMessage();
     }
+    public void error(String message, int status) {
+        this.status = status;
+        this.message = message;
+    }
     public abstract void successWithResult(Object result);
 }

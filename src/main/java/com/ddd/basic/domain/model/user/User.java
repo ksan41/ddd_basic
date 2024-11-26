@@ -4,6 +4,7 @@ import com.ddd.basic.common.constants.ExceptionMessage;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Objects;
 
@@ -38,6 +39,16 @@ public class User {
             throw new IllegalArgumentException(ExceptionMessage.NOT_VALID_USER_NAME.getMessage());
         }
         this.name = name;
+    }
+
+    public void changePassword(String password, PasswordEncoder encoder) throws NullPointerException, IllegalArgumentException{
+        if (password == null) {
+            throw new NullPointerException(ExceptionMessage.NOT_VALID_USER_PASSWORD.getMessage());
+        }
+        if (password.length() < 6 || password.length() > 20) {
+            throw new IllegalArgumentException(ExceptionMessage.NOT_VALID_USER_PASSWORD.getMessage());
+        }
+        this.password = encoder.encode(password);
     }
 
     public Boolean isPremium() {
