@@ -1,7 +1,7 @@
-package com.ddd.basic.domain.invvitation;
+package com.ddd.basic.domain.model.invitation;
 
-import com.ddd.basic.domain.User;
-import com.ddd.basic.domain.circle.Circle;
+import com.ddd.basic.domain.model.circle.Circle;
+import com.ddd.basic.domain.model.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

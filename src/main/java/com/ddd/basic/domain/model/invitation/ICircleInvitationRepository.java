@@ -1,7 +1,5 @@
-package com.ddd.basic.repository;
+package com.ddd.basic.domain.model.invitation;
 
-
-import com.ddd.basic.domain.invvitation.CircleInvitation;
 
 public interface ICircleInvitationRepository {
 
