@@ -3,12 +3,14 @@ package com.ddd.basic.domain.model.user;
 import com.ddd.basic.common.constants.ExceptionMessage;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -21,6 +23,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserGrade grade;
 
+    public User(String email, String name, String password) {
+        this.email = email;
+        this.name = name;
+        this.password = password;
+        this.grade = UserGrade.NORMAL;
+    }
+
     public void changeName(String name) throws NullPointerException, IllegalArgumentException{
         if (!Objects.nonNull(name)) {
             throw new NullPointerException(ExceptionMessage.NOT_VALID_USER_NAME.getMessage());
@@ -32,6 +41,6 @@ public class User {
     }
 
     public Boolean isPremium() {
-        return true;
+        return this.grade == UserGrade.PREMIUM;
     }
 }

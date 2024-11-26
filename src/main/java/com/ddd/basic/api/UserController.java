@@ -59,7 +59,8 @@ public class UserController {
             Long userId = userApplicationService.register(postUser);
             res.successWithResult(userId);
         } catch (IllegalIdentifierException e) {
-            // dupl
+            log.error(ExceptionMessage.DUPLICATED_USER_EMAIL.getMessage(), e);
+            res.error(ExceptionMessage.DUPLICATED_USER_EMAIL);
         }
         return res;
     }
