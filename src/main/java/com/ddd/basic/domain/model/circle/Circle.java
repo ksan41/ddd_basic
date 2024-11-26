@@ -1,8 +1,8 @@
-package com.ddd.basic.domain.circle;
+package com.ddd.basic.domain.model.circle;
 
-import com.ddd.basic.BasicEntity;
+import com.ddd.basic.domain.shared.BasicEntity;
 import com.ddd.basic.common.constants.ExceptionMessage;
-import com.ddd.basic.domain.user.User;
+import com.ddd.basic.domain.model.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

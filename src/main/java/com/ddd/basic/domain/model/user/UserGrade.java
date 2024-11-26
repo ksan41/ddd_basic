@@ -1,4 +1,4 @@
-package com.ddd.basic.domain.user;
+package com.ddd.basic.domain.model.user;
 
 public enum UserGrade {
     NORMAL("normal"),

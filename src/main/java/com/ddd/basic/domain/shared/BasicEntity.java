@@ -1,4 +1,4 @@
-package com.ddd.basic;
+package com.ddd.basic.domain.shared;
 
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;

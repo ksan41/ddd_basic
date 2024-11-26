@@ -1,12 +1,14 @@
-package com.ddd.basic.service;
+package com.ddd.basic.application.circle;
 
 import com.ddd.basic.common.constants.ExceptionMessage;
-import com.ddd.basic.domain.circle.*;
-import com.ddd.basic.domain.user.User;
+import com.ddd.basic.domain.model.circle.*;
+import com.ddd.basic.domain.model.circle.spec.CircleFullSpecification;
+import com.ddd.basic.domain.model.circle.spec.CircleRecommendSpecification;
+import com.ddd.basic.domain.model.service.CircleService;
+import com.ddd.basic.domain.model.user.User;
 import com.ddd.basic.domain.invvitation.CircleInvitation;
-import com.ddd.basic.repository.ICircleInvitationRepository;
-import com.ddd.basic.repository.IUserRepository;
-import com.ddd.basic.repository.circle.*;
+import com.ddd.basic.domain.ICircleInvitationRepository;
+import com.ddd.basic.domain.model.user.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.stereotype.Service;
@@ -28,12 +30,12 @@ public class CircleApplicationService {
     private CircleFullSpecification circleFullSpec = new CircleFullSpecification();
 
     @Transactional
-    public void create(CircleCreateDto circle) throws IllegalArgumentException, NullPointerException {
-        User owner = userRepository.find(circle.getOwnerUserId());
+    public void create(CircleCreateDto createCircle) throws IllegalArgumentException, NullPointerException {
+        User owner = userRepository.find(createCircle.getOwnerUserId());
         if (!Objects.nonNull(owner)) {
             throw new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage());
         }
-        Circle newCircle = circleFactory.create(circle.getCircleName(), owner);
+        Circle newCircle = circleFactory.create(createCircle.getCircleName(), owner);
         if (circleService.exists(newCircle)) {
             throw new IllegalIdentifierException(ExceptionMessage.DUPLICATED_CIRCLE_NAME.getMessage());
         }

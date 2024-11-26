@@ -1,4 +1,4 @@
-package com.ddd.basic.domain.user;
+package com.ddd.basic.domain.model.user;
 
 import com.ddd.basic.common.constants.ExceptionMessage;
 import jakarta.persistence.*;

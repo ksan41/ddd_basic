@@ -1,7 +1,7 @@
-package com.ddd.basic.service;
+package com.ddd.basic.domain.model.service;
 
-import com.ddd.basic.domain.circle.Circle;
-import com.ddd.basic.repository.circle.ICircleRepository;
+import com.ddd.basic.domain.model.circle.Circle;
+import com.ddd.basic.domain.model.circle.ICircleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

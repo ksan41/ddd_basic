@@ -1,7 +1,6 @@
-package com.ddd.basic.repository.circle;
+package com.ddd.basic.domain.model.circle;
 
-import com.ddd.basic.common.ISpecification;
-import com.ddd.basic.domain.circle.Circle;
+import com.ddd.basic.domain.shared.ISpecification;
 
 import java.util.List;
 

@@ -1,6 +1,7 @@
-package com.ddd.basic.domain.circle;
+package com.ddd.basic.domain.model.circle.spec;
 
-import com.ddd.basic.common.ISpecification;
+import com.ddd.basic.domain.model.circle.Circle;
+import com.ddd.basic.domain.shared.ISpecification;
 
 public class CircleFullSpecification implements ISpecification<Circle> {
     public boolean isSatisfied(Circle circle) {
