@@ -78,4 +78,17 @@ public class UserController {
         }
         return res;
     }
+
+    @DeleteMapping("{id}")
+    public ResponseModel withdrawal(@PathVariable("id") Long userId) {
+        ResponseModel res = new ResultMessage<>();
+        try {
+            userApplicationService.withdrawal(userId);
+            res.success();
+        } catch(NullPointerException e) {
+            log.error(e.getMessage(), e);
+            res.error(e.getMessage(), 400);
+        }
+        return res;
+    }
 }

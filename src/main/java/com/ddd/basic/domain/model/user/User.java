@@ -1,6 +1,7 @@
 package com.ddd.basic.domain.model.user;
 
 import com.ddd.basic.common.constants.ExceptionMessage;
+import com.ddd.basic.domain.shared.BasicEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @NoArgsConstructor
-public class User {
+public class User extends BasicEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
@@ -53,5 +54,9 @@ public class User {
 
     public Boolean isPremium() {
         return this.grade == UserGrade.PREMIUM;
+    }
+
+    public void withdrawal() {
+        super.setDeleteDateNow();
     }
 }

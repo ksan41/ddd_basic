@@ -39,7 +39,10 @@ public class UserApplicationService {
         }
     }
 
-    public void delete() {
-
+    @Transactional
+    public void withdrawal(Long userId) throws NullPointerException{
+        User user = userRepository.find(userId);
+        if (user == null) throw new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage());
+        user.withdrawal();
     }
 }
