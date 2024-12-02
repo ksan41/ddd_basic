@@ -42,6 +42,7 @@ public class CircleApplicationService {
         circleRepository.save(newCircle);
     }
 
+    @Transactional
     public void join(CircleJoinDto joinInfo) throws IllegalArgumentException, NullPointerException{
         User joinMember = userRepository.find(joinInfo.getUserId());
         if (!Objects.nonNull(joinMember)) {
