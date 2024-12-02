@@ -9,4 +9,14 @@ import java.time.LocalDateTime;
 @Getter
 public class BasicEntity {
     private LocalDateTime createDate;
+
+    private LocalDateTime deleteDate;
+
+    protected void setCreateDateNow() {
+        this.createDate = LocalDateTime.now();
+    }
+
+    protected void setDeleteDateNow() {
+        this.deleteDate = LocalDateTime.now();
+    }
 }
