@@ -76,6 +76,9 @@ public class UserController {
         } catch(IllegalArgumentException | NullPointerException e) {
             log.error(e.getMessage(), e);
             res.error(e.getMessage(), 400);
+        } catch(IllegalIdentifierException e) {
+            log.error(e.getMessage(), e);
+            res.error(e.getMessage(), 403);
         }
         return res;
     }

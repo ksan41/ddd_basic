@@ -29,11 +29,13 @@ public class UserApplicationService {
     }
 
     @Transactional
-    public void update(Long userId, UserPutDto putUserInfo) throws NullPointerException, IllegalArgumentException{
+    public void update(Long userId, UserPutDto putUserInfo) throws NullPointerException, IllegalArgumentException, IllegalIdentifierException{
         User user = userRepository.find(userId).orElseThrow(() -> new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage()));
         if (userService.isPasswordMatched(userId, putUserInfo.getOriginPassword())) {
             user.changeName(putUserInfo.getName());
             user.changePassword(putUserInfo.getChangePassword(), passwordEncoder);
+        } else {
+            throw new IllegalIdentifierException(ExceptionMessage.AUTHENTICATION_FAILED.getMessage());
         }
     }
 
