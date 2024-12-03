@@ -21,7 +21,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public Optional<User> find(String email) {
-        return Optional.of(jpaUserRepository.findByEmail(email));
+        return Optional.ofNullable(jpaUserRepository.findByEmail(email));
     }
 
     @Override
