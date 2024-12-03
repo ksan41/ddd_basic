@@ -18,8 +18,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@RestController("user")
 @Slf4j
+@RequestMapping("user")
+@RestController()
 public class UserController {
 
     private final UserApplicationService userApplicationService;
@@ -44,7 +45,7 @@ public class UserController {
     public ResponseModel get(@PathVariable("id") Long userId) {
         ResponseModel res = new ResultMessage<>();
         try {
-            UserViewDto user = new UserViewDto(userRepository.find(userId));
+            UserViewDto user = new UserViewDto(userRepository.find(userId).orElseThrow(NullPointerException::new));
             res.successWithResult(user);
         }  catch (NullPointerException e) {
             log.error(ExceptionMessage.NOT_FOUND_USER.getMessage(), e);

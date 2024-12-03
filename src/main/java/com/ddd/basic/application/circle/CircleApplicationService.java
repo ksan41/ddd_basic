@@ -5,10 +5,10 @@ import com.ddd.basic.domain.model.circle.*;
 import com.ddd.basic.domain.model.circle.spec.CircleFullSpecification;
 import com.ddd.basic.domain.model.circle.spec.CircleRecommendSpecification;
 import com.ddd.basic.domain.model.service.CircleService;
+import com.ddd.basic.domain.model.user.IUserRepository;
 import com.ddd.basic.domain.model.user.User;
 import com.ddd.basic.domain.model.invitation.CircleInvitation;
 import com.ddd.basic.domain.model.invitation.ICircleInvitationRepository;
-import com.ddd.basic.domain.model.user.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.stereotype.Service;
@@ -31,10 +31,7 @@ public class CircleApplicationService {
 
     @Transactional
     public void create(CircleCreateDto createCircle) throws IllegalArgumentException, NullPointerException {
-        User owner = userRepository.find(createCircle.getOwnerUserId());
-        if (!Objects.nonNull(owner)) {
-            throw new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage());
-        }
+        User owner = userRepository.find(createCircle.getOwnerUserId()).orElseThrow(() -> new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage()));
         Circle newCircle = circleFactory.create(createCircle.getCircleName(), owner);
         if (circleService.exists(newCircle)) {
             throw new IllegalIdentifierException(ExceptionMessage.DUPLICATED_CIRCLE_NAME.getMessage());
@@ -44,10 +41,8 @@ public class CircleApplicationService {
 
     @Transactional
     public void join(CircleJoinDto joinInfo) throws IllegalArgumentException, NullPointerException{
-        User joinMember = userRepository.find(joinInfo.getUserId());
-        if (!Objects.nonNull(joinMember)) {
-            throw new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage());
-        }
+        User joinMember = userRepository.find(joinInfo.getUserId()).orElseThrow(() -> new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage()));
+
         Circle circle = circleRepository.find(joinInfo.getCircleId());
         if (!Objects.nonNull(circle)) {
             throw new NullPointerException(ExceptionMessage.NOT_FOUND_CIRCLE.getMessage());
@@ -61,15 +56,8 @@ public class CircleApplicationService {
     }
 
     public void invite(CircleInviteDto inviteInfo) {
-        User fromUser = userRepository.find(inviteInfo.getFromUserId());
-        if (!Objects.nonNull(fromUser)) {
-            throw new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage());
-        }
-
-        User invitedUser = userRepository.find(inviteInfo.getInvitedUserId());
-        if (!Objects.nonNull(invitedUser)) {
-            throw new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage());
-        }
+        User fromUser = userRepository.find(inviteInfo.getFromUserId()).orElseThrow(()->new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage()));
+        User invitedUser = userRepository.find(inviteInfo.getInvitedUserId()).orElseThrow(()->new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage()));
 
         Circle circle = circleRepository.find(inviteInfo.getCircleId());
         if (!Objects.nonNull(circle)) {

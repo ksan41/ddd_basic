@@ -4,7 +4,9 @@ import com.ddd.basic.domain.model.user.IUserFactory;
 import com.ddd.basic.domain.model.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class UserFactory implements IUserFactory {
 

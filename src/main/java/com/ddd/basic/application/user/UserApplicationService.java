@@ -30,9 +30,7 @@ public class UserApplicationService {
 
     @Transactional
     public void update(Long userId, UserPutDto putUserInfo) throws NullPointerException, IllegalArgumentException{
-        User user = userRepository.find(userId);
-        if (user == null) throw new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage());
-
+        User user = userRepository.find(userId).orElseThrow(() -> new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage()));
         user.changeName(putUserInfo.getName());
         if (userService.isPasswordMatched(userId, putUserInfo.getOriginPassword())) {
             user.changePassword(putUserInfo.getChangePassword(), passwordEncoder);
@@ -41,8 +39,7 @@ public class UserApplicationService {
 
     @Transactional
     public void withdrawal(Long userId) throws NullPointerException{
-        User user = userRepository.find(userId);
-        if (user == null) throw new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage());
+        User user = userRepository.find(userId).orElseThrow(() -> new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage()));
         user.withdrawal();
     }
 }
