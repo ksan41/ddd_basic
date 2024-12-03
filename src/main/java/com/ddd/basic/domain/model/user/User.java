@@ -3,6 +3,8 @@ package com.ddd.basic.domain.model.user;
 import com.ddd.basic.common.constants.ExceptionMessage;
 import com.ddd.basic.domain.shared.BasicEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,7 +20,10 @@ public class User extends BasicEntity {
     @Column(name = "user_id")
     private Long id;
 
+    @Email(message = "이메일 형식에 맞지 않습니다.")
     private String email;
+
+    @Pattern(regexp = "^([가-힣]{2,12})$")
     private String name;
     private String password;
 
