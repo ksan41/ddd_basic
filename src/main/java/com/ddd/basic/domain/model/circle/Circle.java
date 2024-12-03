@@ -1,5 +1,6 @@
 package com.ddd.basic.domain.model.circle;
 
+import com.ddd.basic.domain.model.CircleUser;
 import com.ddd.basic.domain.shared.BasicEntity;
 import com.ddd.basic.common.constants.ExceptionMessage;
 import com.ddd.basic.domain.model.user.User;
@@ -23,11 +24,10 @@ public class Circle extends BasicEntity {
     private String name;
     @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
-    @OneToMany
-    @JoinColumn()
-    private List<User> members;
+    @OneToMany(mappedBy = "circle")
+    private List<CircleUser> members;
 
-    public Circle(String name, User owner, List<User> members) throws IllegalArgumentException{
+    public Circle(String name, User owner, List<CircleUser> members) throws IllegalArgumentException{
         if (!Objects.nonNull(name) || name.length() < 3 || name.length() > 20) {
             throw new IllegalArgumentException(ExceptionMessage.NOT_VALID_CIRCLE_NAME.getMessage());
         }
@@ -38,7 +38,7 @@ public class Circle extends BasicEntity {
 
     public void join(User user) throws NullPointerException{
         if (!Objects.nonNull(user)) throw new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage());
-        members.add(user);
+        members.add(new CircleUser(user, this));
     }
 
     public int countMembers() {
