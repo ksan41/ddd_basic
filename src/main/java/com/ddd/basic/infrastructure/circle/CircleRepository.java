@@ -18,8 +18,8 @@ public class CircleRepository implements ICircleRepository {
     private final JpaCircleRepository jpaCircleRepository;
 
     @Override
-    public void save(Circle circle) {
-        jpaCircleRepository.save(circle);
+    public Circle save(Circle circle) {
+        return jpaCircleRepository.save(circle);
     }
 
     @Override

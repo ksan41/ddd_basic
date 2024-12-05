@@ -1,4 +1,4 @@
-package com.ddd.basic.domain.model;
+package com.ddd.basic.domain.model.circleuser;
 
 import com.ddd.basic.domain.model.circle.Circle;
 import com.ddd.basic.domain.model.user.User;

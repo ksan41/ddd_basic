@@ -1,6 +1,6 @@
 package com.ddd.basic.domain.model.circle;
 
-import com.ddd.basic.domain.model.CircleUser;
+import com.ddd.basic.domain.model.circleuser.CircleUser;
 import com.ddd.basic.domain.shared.BasicEntity;
 import com.ddd.basic.common.constants.ExceptionMessage;
 import com.ddd.basic.domain.model.user.User;
@@ -36,9 +36,9 @@ public class Circle extends BasicEntity {
         this.members = members;
     }
 
-    public void join(User user) throws NullPointerException{
+    public void join(CircleUser user) throws NullPointerException{
         if (!Objects.nonNull(user)) throw new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage());
-        members.add(new CircleUser(user, this));
+        members.add(user);
     }
 
     public int countMembers() {

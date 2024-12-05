@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ICircleRepository {
-    void save(Circle circle);
+    Circle save(Circle circle);
     Optional<Circle> find(Long circleId);
     Optional<Circle> find(String circleName);
 
