@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -40,29 +39,24 @@ public class CircleApplicationService {
     }
 
     @Transactional
-    public void join(CircleJoinDto joinInfo) throws IllegalArgumentException, NullPointerException{
+    public void join(CircleJoinDto joinInfo) throws NegativeArraySizeException, NullPointerException{
         User joinMember = userRepository.find(joinInfo.getUserId()).orElseThrow(() -> new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage()));
 
-        Circle circle = circleRepository.find(joinInfo.getCircleId());
-        if (!Objects.nonNull(circle)) {
-            throw new NullPointerException(ExceptionMessage.NOT_FOUND_CIRCLE.getMessage());
-        }
+        Circle circle = circleRepository.find(joinInfo.getCircleId()).orElseThrow(() -> new NullPointerException(ExceptionMessage.NOT_FOUND_CIRCLE.getMessage()));
 
         if (circleFullSpec.isSatisfied(circle)) {
-            throw new IllegalArgumentException(ExceptionMessage.FULL_CIRCLE_MEMBERS.getMessage());
+            throw new NegativeArraySizeException(ExceptionMessage.FULL_CIRCLE_MEMBERS.getMessage());
         }
         circle.join(joinMember);
         circleRepository.save(circle);
     }
 
-    public void invite(CircleInviteDto inviteInfo) {
+    public void invite(CircleInviteDto inviteInfo) throws NullPointerException, NegativeArraySizeException{
         User fromUser = userRepository.find(inviteInfo.getFromUserId()).orElseThrow(()->new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage()));
         User invitedUser = userRepository.find(inviteInfo.getInvitedUserId()).orElseThrow(()->new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage()));
 
-        Circle circle = circleRepository.find(inviteInfo.getCircleId());
-        if (!Objects.nonNull(circle)) {
-            throw new NullPointerException(ExceptionMessage.NOT_FOUND_CIRCLE.getMessage());
-        }
+        Circle circle = circleRepository.find(inviteInfo.getCircleId()).orElseThrow(() -> new NullPointerException(ExceptionMessage.NOT_FOUND_CIRCLE.getMessage()));
+
         if (circleFullSpec.isSatisfied(circle)) {
             throw new NegativeArraySizeException(ExceptionMessage.FULL_CIRCLE_MEMBERS.getMessage());
         }
