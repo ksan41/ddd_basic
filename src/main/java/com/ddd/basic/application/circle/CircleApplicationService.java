@@ -70,7 +70,7 @@ public class CircleApplicationService {
         circleInvitationRepository.save(circleInvitation);
     }
 
-    public List<Circle> getRecommend(CircleGetRecommendDto recommendRequest) {
+    public List<Circle> getRecommend() {
         CircleRecommendSpecification circleRecommendSpec = new CircleRecommendSpecification(LocalDateTime.now());
 
         return circleRepository.findRecommended(circleRecommendSpec)

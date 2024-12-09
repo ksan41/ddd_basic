@@ -42,6 +42,6 @@ public class Circle extends BasicEntity {
     }
 
     public int countMembers() {
-        return this.members.size() + 1;
+        return this.members.size();
     }
 }

@@ -1,18 +1,15 @@
 package com.ddd.basic.api;
 
-import com.ddd.basic.application.circle.CircleApplicationService;
-import com.ddd.basic.application.circle.CircleCreateDto;
-import com.ddd.basic.application.circle.CircleInviteDto;
-import com.ddd.basic.application.circle.CircleJoinDto;
+import com.ddd.basic.application.circle.*;
 import com.ddd.basic.common.ResponseModel;
+import com.ddd.basic.common.ResultListMessage;
 import com.ddd.basic.common.ResultMessage;
 import com.ddd.basic.common.constants.ExceptionMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -67,6 +64,18 @@ public class CircleController {
             log.error(ExceptionMessage.FULL_CIRCLE_MEMBERS.getMessage(), e);
             res.error(ExceptionMessage.FULL_CIRCLE_MEMBERS);
         }
+        return res;
+    }
+
+    @GetMapping("recommend")
+    public ResponseModel getRecommend() {
+        ResponseModel res = new ResultListMessage<>();
+        List<CircleViewDto> recommendList =
+                circleApplicationService.getRecommend()
+                        .stream()
+                        .map(CircleViewDto::new)
+                        .toList();
+        res.successWithResult(recommendList);
         return res;
     }
 }
