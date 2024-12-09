@@ -29,7 +29,7 @@ public class CircleApplicationService {
     private final ICircleRepository circleRepository;
     private final ICircleUserRepository circleUserRepository;
     private final ICircleInvitationRepository circleInvitationRepository;
-    private CircleFullSpecification circleFullSpec = new CircleFullSpecification();
+    private final CircleFullSpecification circleFullSpec;
 
     @Transactional
     public Long create(CircleCreateDto createCircle) throws IllegalArgumentException, NullPointerException {
