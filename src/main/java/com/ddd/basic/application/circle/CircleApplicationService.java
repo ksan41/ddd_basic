@@ -9,8 +9,6 @@ import com.ddd.basic.domain.model.circleuser.ICircleUserRepository;
 import com.ddd.basic.domain.model.service.CircleService;
 import com.ddd.basic.domain.model.user.IUserRepository;
 import com.ddd.basic.domain.model.user.User;
-import com.ddd.basic.domain.model.invitation.CircleInvitation;
-import com.ddd.basic.domain.model.invitation.ICircleInvitationRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.stereotype.Service;
@@ -28,7 +26,6 @@ public class CircleApplicationService {
     private final CircleService circleService;
     private final ICircleRepository circleRepository;
     private final ICircleUserRepository circleUserRepository;
-    private final ICircleInvitationRepository circleInvitationRepository;
     private final CircleFullSpecification circleFullSpec;
 
     @Transactional
@@ -55,19 +52,6 @@ public class CircleApplicationService {
         CircleUser circleUser = new CircleUser(joinMember, circle);
         circleUserRepository.save(circleUser);
         circle.join(circleUser);
-    }
-
-    public void invite(CircleInviteDto inviteInfo) throws NullPointerException, NegativeArraySizeException{
-        User fromUser = userRepository.find(inviteInfo.getFromUserId()).orElseThrow(()->new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage()));
-        User invitedUser = userRepository.find(inviteInfo.getInvitedUserId()).orElseThrow(()->new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage()));
-
-        Circle circle = circleRepository.find(inviteInfo.getCircleId()).orElseThrow(() -> new NullPointerException(ExceptionMessage.NOT_FOUND_CIRCLE.getMessage()));
-
-        if (circleFullSpec.isSatisfied(circle)) {
-            throw new NegativeArraySizeException(ExceptionMessage.FULL_CIRCLE_MEMBERS.getMessage());
-        }
-        CircleInvitation circleInvitation = new CircleInvitation(circle, fromUser, invitedUser);
-        circleInvitationRepository.save(circleInvitation);
     }
 
     public List<Circle> getRecommend() {
