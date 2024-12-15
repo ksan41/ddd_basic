@@ -51,22 +51,6 @@ public class CircleController {
         return res;
     }
 
-    @PostMapping("invite")
-    public ResponseModel invite(@RequestBody CircleInviteDto inviteInfo) {
-        ResponseModel res = new ResultMessage<>();
-        try {
-            circleApplicationService.invite(inviteInfo);
-            res.success();
-        } catch(NullPointerException e) {
-            log.error(e.getMessage(), e);
-            res.error(ExceptionMessage.valueOf(e.getMessage()));
-        } catch(NegativeArraySizeException e) {
-            log.error(ExceptionMessage.FULL_CIRCLE_MEMBERS.getMessage(), e);
-            res.error(ExceptionMessage.FULL_CIRCLE_MEMBERS);
-        }
-        return res;
-    }
-
     @GetMapping("recommend")
     public ResponseModel getRecommend() {
         ResponseModel res = new ResultListMessage<>();
