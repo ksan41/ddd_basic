@@ -15,3 +15,11 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
+springdoc:
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: /swagger-ui
+    disable-swagger-default-url: true
+    display-request-duration: true
+  packages-to-scan: com.ddd.basic.api
