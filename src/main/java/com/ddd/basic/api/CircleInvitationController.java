@@ -1,17 +1,14 @@
 package com.ddd.basic.api;
 
-import com.ddd.basic.application.circle.CircleApplicationService;
-import com.ddd.basic.application.circle.CircleInviteDto;
+import com.ddd.basic.application.invitation.CircleInviteDto;
 import com.ddd.basic.application.invitation.CircleInvitationApplicationService;
+import com.ddd.basic.application.invitation.InvitationResponseDto;
 import com.ddd.basic.common.ResponseModel;
 import com.ddd.basic.common.ResultMessage;
 import com.ddd.basic.common.constants.ExceptionMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -21,7 +18,7 @@ public class CircleInvitationController {
 
     private final CircleInvitationApplicationService invitationApplicationService;
 
-    @PostMapping("invite")
+    @PostMapping()
     public ResponseModel invite(@RequestBody CircleInviteDto inviteInfo) {
         ResponseModel res = new ResultMessage<>();
         try {
@@ -33,6 +30,20 @@ public class CircleInvitationController {
         } catch(NegativeArraySizeException e) {
             log.error(ExceptionMessage.FULL_CIRCLE_MEMBERS.getMessage(), e);
             res.error(ExceptionMessage.FULL_CIRCLE_MEMBERS);
+        }
+        return res;
+    }
+
+    @PutMapping("{id}")
+    public ResponseModel responseInvitation(@PathVariable("id") Long userId,
+                                            @RequestBody InvitationResponseDto responseInfo) {
+        ResponseModel res = new ResultMessage<>();
+        try {
+            invitationApplicationService.responseInvitation(userId, responseInfo);
+            res.success();
+        } catch (NullPointerException e) {
+            log.error(ExceptionMessage.NOT_FOUND_CIRCLE_INVITATION.getMessage(), e);
+            res.error(ExceptionMessage.NOT_FOUND_CIRCLE_INVITATION);
         }
         return res;
     }

@@ -1,4 +1,4 @@
-package com.ddd.basic.application.circle;
+package com.ddd.basic.application.invitation;
 
 import lombok.Getter;
 
