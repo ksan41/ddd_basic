@@ -1,9 +1,6 @@
 package com.ddd.basic.api;
 
-import com.ddd.basic.application.user.UserApplicationService;
-import com.ddd.basic.application.user.UserPostDto;
-import com.ddd.basic.application.user.UserPutDto;
-import com.ddd.basic.application.user.UserViewDto;
+import com.ddd.basic.application.user.*;
 import com.ddd.basic.common.ResponseModel;
 import com.ddd.basic.common.ResultListMessage;
 import com.ddd.basic.common.ResultMessage;
@@ -28,6 +25,23 @@ public class UserController {
 
     private final UserApplicationService userApplicationService;
     private final IUserRepository userRepository;
+
+    @Operation(summary = "사용자 로그인")
+    @PostMapping("login")
+    public ResponseModel login(@RequestBody UserLoginDto loginInfo) {
+        ResponseModel res = new ResultMessage<>();
+        try {
+            String token = userApplicationService.login(loginInfo);
+            res.successWithResult(token);
+        } catch(NullPointerException e) {
+            log.error(ExceptionMessage.NOT_FOUND_USER.getMessage(), e);
+            res.error(ExceptionMessage.NOT_FOUND_USER);
+        } catch(IllegalIdentifierException e) {
+            log.error(ExceptionMessage.AUTHENTICATION_FAILED.getMessage(), e);
+            res.error(ExceptionMessage.AUTHENTICATION_FAILED);
+        }
+        return res;
+    }
 
     @Operation(summary = "사용자 전체 조회")
     @GetMapping()

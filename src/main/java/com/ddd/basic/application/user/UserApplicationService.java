@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Base64;
+
 @RequiredArgsConstructor
 @Service
 public class UserApplicationService {
@@ -26,6 +28,18 @@ public class UserApplicationService {
         }
         User user = userFactory.create(postUser.getEmail(), postUser.getName(), postUser.getPassword());
         return userRepository.save(user);
+    }
+
+    public String login(UserLoginDto loginInfo) throws NullPointerException {
+        String token = "";
+        User user = userRepository.find(loginInfo.getEmail()).orElseThrow(() -> new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage()));
+        String inputPassword = new String(Base64.getDecoder().decode(loginInfo.getPassword()));
+        if (userService.isPasswordMatched(user.getId(), inputPassword)) {
+            // 토큰 관련 처리..
+        } else {
+            throw new IllegalIdentifierException(ExceptionMessage.AUTHENTICATION_FAILED.getMessage());
+        }
+        return token;
     }
 
     @Transactional
