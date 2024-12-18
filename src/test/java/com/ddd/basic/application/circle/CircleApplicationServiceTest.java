@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @SpringBootTest
 @Transactional
@@ -57,5 +59,22 @@ class CircleApplicationServiceTest {
     private Long createTestUser(String email, String name) {
         UserPostDto newUser = new UserPostDto(email, name, "aaa12345");
         return userApplicationService.register(newUser);
+    }
+
+    @Test
+    public void 서클_검색_테스트() {
+        Long ownerUserId = createTestUser("aaa@gmail.com", "홍길동");
+
+        for (int i = 0; i < 100; i++) {
+            CircleCreateDto circle = new CircleCreateDto(ownerUserId, String.format("서클%d", i));
+            circleApplicationService.create(circle);
+        }
+        CircleSearchDto searchInfo = new CircleSearchDto("서클", 0, "name");
+
+        List<Circle> foundList = circleApplicationService.search(searchInfo);
+        int idx = 0;
+        for (int i = 99; i >= 90 ; i--) {
+            Assertions.assertEquals(String.format("서클%d", i), foundList.get(idx++).getName());
+        }
     }
 }
