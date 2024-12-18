@@ -4,6 +4,7 @@ import com.ddd.basic.domain.model.circle.Circle;
 import com.ddd.basic.domain.model.circle.ICircleRepository;
 import com.ddd.basic.domain.shared.ISpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +17,6 @@ import java.util.stream.Collectors;
 public class CircleRepository implements ICircleRepository {
 
     private final JpaCircleRepository jpaCircleRepository;
-
     @Override
     public Circle save(Circle circle) {
         return jpaCircleRepository.save(circle);
@@ -35,6 +35,11 @@ public class CircleRepository implements ICircleRepository {
     @Override
     public List<Circle> findAll() {
         return jpaCircleRepository.findAll();
+    }
+
+    @Override
+    public List<Circle> search(String keyword, Pageable pageInfo) {
+        return jpaCircleRepository.search(keyword, pageInfo);
     }
 
     @Override

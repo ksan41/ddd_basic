@@ -18,7 +18,7 @@ public class UserService {
         return userRepository.find(email).isPresent();
     }
 
-    public boolean isPasswordMatched(Long userId, String inputPassword) {
+    public boolean isPasswordMatched(Long userId, String inputPassword) throws NullPointerException {
         User user = userRepository.find(userId).orElseThrow(() -> new NullPointerException(ExceptionMessage.NOT_FOUND_USER.getMessage()));
         return passwordEncoder.matches(inputPassword, user.getPassword());
     }

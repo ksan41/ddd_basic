@@ -11,22 +11,35 @@ import com.ddd.basic.domain.model.user.IUserRepository;
 import com.ddd.basic.domain.model.user.User;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
 public class CircleApplicationService {
-
+    private final int PAGE_SIZE = 10;
     private final IUserRepository userRepository;
     private final ICircleFactory circleFactory;
     private final CircleService circleService;
     private final ICircleRepository circleRepository;
     private final ICircleUserRepository circleUserRepository;
     private final CircleFullSpecification circleFullSpec;
+
+    public List<Circle> search(CircleSearchDto searchInfo) {
+        String searchKeyword = "";
+        if (Objects.nonNull(searchInfo.getKeyword())) {
+            searchKeyword = searchInfo.getKeyword();
+        }
+        Pageable page = PageRequest.of(searchInfo.getPage(), PAGE_SIZE, Sort.by(Sort.Direction.DESC, searchInfo.getSortBy()));
+        return circleRepository.search(searchKeyword, page);
+    }
 
     @Transactional
     public Long create(CircleCreateDto createCircle) throws IllegalArgumentException, NullPointerException {
