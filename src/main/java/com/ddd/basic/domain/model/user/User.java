@@ -25,6 +25,8 @@ public class User extends BasicEntity {
 
     @Pattern(regexp = "^([가-힣]{2,12})$")
     private String name;
+
+    @Pattern(regexp = "^(?=.*[a-zA-Z])((?=.*\\\\d)|(?=.*\\\\W)).{8,20}$")
     private String password;
 
     @Enumerated(EnumType.STRING)
