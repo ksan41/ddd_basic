@@ -11,6 +11,7 @@ import com.ddd.basic.domain.model.user.IUserRepository;
 import com.ddd.basic.domain.model.user.User;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -32,13 +33,14 @@ public class CircleApplicationService {
     private final ICircleUserRepository circleUserRepository;
     private final CircleFullSpecification circleFullSpec;
 
-    public List<Circle> search(CircleSearchDto searchInfo) {
+    public Page<CircleViewDto> search(CircleSearchDto searchInfo) {
         String searchKeyword = "";
         if (Objects.nonNull(searchInfo.getKeyword())) {
             searchKeyword = searchInfo.getKeyword();
         }
         Pageable page = PageRequest.of(searchInfo.getPage(), PAGE_SIZE, Sort.by(Sort.Direction.DESC, searchInfo.getSortBy()));
-        return circleRepository.search(searchKeyword, page);
+
+        return circleRepository.search(searchKeyword, page).map(CircleViewDto::new);
     }
 
     @Transactional

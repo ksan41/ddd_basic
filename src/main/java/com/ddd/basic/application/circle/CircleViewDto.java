@@ -1,9 +1,11 @@
 package com.ddd.basic.application.circle;
 
 import com.ddd.basic.domain.model.circle.Circle;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
+@Getter
 public class CircleViewDto {
 
     private Long id;

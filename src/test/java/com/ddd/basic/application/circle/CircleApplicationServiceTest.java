@@ -2,11 +2,9 @@ package com.ddd.basic.application.circle;
 
 import com.ddd.basic.application.user.UserApplicationService;
 import com.ddd.basic.application.user.UserPostDto;
-import com.ddd.basic.common.constants.ExceptionMessage;
-import com.ddd.basic.domain.model.circle.Circle;
 import com.ddd.basic.domain.model.service.CircleService;
 import com.ddd.basic.domain.model.user.IUserFactory;
-import com.ddd.basic.domain.model.user.User;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 
+@Slf4j
 @SpringBootTest
 @Transactional
 class CircleApplicationServiceTest {
@@ -57,7 +56,7 @@ class CircleApplicationServiceTest {
     }
 
     private Long createTestUser(String email, String name) {
-        UserPostDto newUser = new UserPostDto(email, name, "aaa12345");
+        UserPostDto newUser = new UserPostDto(email, name, "YWFhMTIzNDUh"); // aaa12345!
         return userApplicationService.register(newUser);
     }
 
@@ -69,12 +68,13 @@ class CircleApplicationServiceTest {
             CircleCreateDto circle = new CircleCreateDto(ownerUserId, String.format("서클%d", i));
             circleApplicationService.create(circle);
         }
+        log.debug("==========================================================");
         CircleSearchDto searchInfo = new CircleSearchDto("서클", 0, "name");
 
-        List<Circle> foundList = circleApplicationService.search(searchInfo);
+        List<CircleViewDto> foundList = circleApplicationService.search(searchInfo).getContent();
         int idx = 0;
-        for (int i = 99; i >= 90 ; i--) {
-            Assertions.assertEquals(String.format("서클%d", i), foundList.get(idx++).getName());
+        for (int i = 99; i>=90 ; i--) {
+            Assertions.assertEquals(String.format("서클%d", i), foundList.get(idx++).getCircleName());
         }
     }
 }

@@ -4,6 +4,7 @@ import com.ddd.basic.domain.model.circle.Circle;
 import com.ddd.basic.domain.model.circle.ICircleRepository;
 import com.ddd.basic.domain.shared.ISpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
@@ -38,7 +39,7 @@ public class CircleRepository implements ICircleRepository {
     }
 
     @Override
-    public List<Circle> search(String keyword, Pageable pageInfo) {
+    public Page<Circle> search(String keyword, Pageable pageInfo) {
         return jpaCircleRepository.search(keyword, pageInfo);
     }
 
