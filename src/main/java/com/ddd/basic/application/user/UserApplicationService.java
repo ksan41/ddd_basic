@@ -5,6 +5,7 @@ import com.ddd.basic.domain.model.service.UserService;
 import com.ddd.basic.domain.model.user.IUserFactory;
 import com.ddd.basic.domain.model.user.User;
 import com.ddd.basic.domain.model.user.IUserRepository;
+import com.ddd.basic.domain.model.user.UserRegistValidationSpecification;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,11 +22,16 @@ public class UserApplicationService {
     private final UserService userService;
     private final IUserFactory userFactory;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final UserRegistValidationSpecification registValidationSpec = new UserRegistValidationSpecification();
 
-    public Long register(UserPostDto postUser) throws IllegalIdentifierException{
+    public Long register(UserPostDto postUser) throws IllegalArgumentException, IllegalIdentifierException{
+        postUser.decodePassword();
+        registValidationSpec.isSatisfied(postUser);
+
         if (userService.isDuplicated(postUser.getEmail())) {
             throw new IllegalIdentifierException(ExceptionMessage.DUPLICATED_USER_EMAIL.getMessage());
         }
+
         User user = userFactory.create(postUser.getEmail(), postUser.getName(), postUser.getPassword());
         return userRepository.save(user);
     }

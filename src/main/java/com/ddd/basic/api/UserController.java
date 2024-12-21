@@ -33,6 +33,9 @@ public class UserController {
         try {
             String token = userApplicationService.login(loginInfo);
             res.successWithResult(token);
+        } catch(IllegalArgumentException e) {
+          log.error(e.getMessage(), e);
+          res.error(e.getMessage(), 400);
         } catch(NullPointerException e) {
             log.error(ExceptionMessage.NOT_FOUND_USER.getMessage(), e);
             res.error(ExceptionMessage.NOT_FOUND_USER);
