@@ -68,4 +68,12 @@ public class CircleController {
         res.successWithResult(recommendList);
         return res;
     }
+
+    @Operation(summary = "서클 검색")
+    @GetMapping()
+    public ResponseModel search(@RequestBody CircleSearchDto searchInfo) {
+        ResponseModel res = new ResultListMessage<>();
+        res.successWithResult(circleApplicationService.search(searchInfo));
+        return res;
+    }
 }
