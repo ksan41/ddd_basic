@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  mysql:
+    image: "mysql:5.7"
+    platform: linux/amd64
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: ddd_basic
+      MYSQL_ROOT_PASSWORD: "1234"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "1234"
+      TZ: 'Asia/Seoul'
+    volumes:
+      - ./db:/var/lib/mysql
+      - ./sql/initdb.d:/docker-entrypoint-initdb.d
+    command:
+      - "mysqld"
+      - "--character-set-server=utf8mb4"
+      - "--lower_case_table_names=1"
+      - "--collation-server=utf8mb4_unicode_ci"
+    networks:
+      - ddd_default
+
+  app:
+    container_name: app
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ddd_basic?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "1234"
+    restart: always
+    networks:
+      - ddd_default
+    entrypoint: ["/wait-for-it.sh", "mysql", "3306", "--", "java", "-jar", "app.jar"]
+
+networks:
+  ddd_default:
